@@ -1,6 +1,6 @@
 #### Project setup
 
-> yarn add express apollo-server-express graphql
+> yarn add express apollo-server-express graphql dotenv
 > yarn add -D nodemon
 
 ### For authentication
