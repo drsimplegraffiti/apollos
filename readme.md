@@ -54,3 +54,19 @@ query {
   }
 }
 ```
+
+#### Update user_profile
+
+Use altair to test this query
+
+```graphql
+mutation ($profile_picture: Upload) {
+  updateProfile(profile_picture: $profile_picture) {
+    id
+    name
+    profile_picture
+  }
+}
+```
+
+Source: https://github.com/era-tech-420/express-graphql-apollo/blob/7_graphql_file_upload/schama.js

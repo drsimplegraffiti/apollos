@@ -1,4 +1,5 @@
 const { ValidationError, ForbiddenError } = require('apollo-server-express');
+const { GraphQLError } = require('graphql');
 const { UnauthorizedError } = require('./exception/handler');
 module.exports = (err) => {
   if (err.originalError instanceof ValidationError) {

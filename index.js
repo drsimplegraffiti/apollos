@@ -14,6 +14,7 @@ const { getUserByToken } = require('./utils');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { applyMiddleware } = require('graphql-middleware');
 const permissions = require('./permissions');
+const graphqlUploadExpress = require('graphql-upload/graphqlUploadExpress.js');
 
 const connectDB = require('./db/db')();
 const app = express();
@@ -40,6 +41,11 @@ const startApp = async () => {
     },
     formatError: (err) => error_response(err),
   });
+
+  app.use(graphqlUploadExpress({
+    maxFileSize: 10000000, // 10 MB
+    maxFiles: 10,
+  }))
 
   await server.start();
 
