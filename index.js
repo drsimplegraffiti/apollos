@@ -7,7 +7,8 @@ const {
   ForbiddenError,
 } = require('apollo-server-express');
 
-const { typeDefs, resolvers } = require('./schema');
+// const { typeDefs, resolvers } = require('./schema');
+const { graphqlModules } = require('./graphql');
 
 const error_response = require('./error_response');
 const { getUserByToken } = require('./utils');
@@ -25,14 +26,16 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
-
-const schemaWithPermissions = applyMiddleware(schema, permissions);
-
 const startApp = async () => {
+  const { typeDefs, resolvers } = await graphqlModules();
+
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
+
+  const schemaWithPermissions = applyMiddleware(schema, permissions);
+
   const server = new ApolloServer({
     schema: schemaWithPermissions,
     context: async ({ req }) => {
@@ -42,10 +45,12 @@ const startApp = async () => {
     formatError: (err) => error_response(err),
   });
 
-  app.use(graphqlUploadExpress({
-    maxFileSize: 10000000, // 10 MB
-    maxFiles: 10,
-  }))
+  app.use(
+    graphqlUploadExpress({
+      maxFileSize: 10000000, // 10 MB
+      maxFiles: 10,
+    })
+  );
 
   await server.start();
 

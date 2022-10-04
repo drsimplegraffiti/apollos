@@ -12,7 +12,7 @@ async function getUserByToken(req) {
       if (token) {
         const {
           data: { userId, email },
-        } = await jwt.verify(token, 'my super secret');
+        } = await jwt.verify(token, process.env.JWT_SECRET);
         user = await User.findById(userId);
         console.log(user);
       }
